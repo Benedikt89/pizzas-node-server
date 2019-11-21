@@ -10,7 +10,7 @@ export interface IPizzaItem {
     text_short: string,
 }
 export interface IPizzaToCreate {
-    filter: Array<IFilterItem>,
+    filter: number,
     name: string,
     photo: string,
     photo_thumbnail: string,

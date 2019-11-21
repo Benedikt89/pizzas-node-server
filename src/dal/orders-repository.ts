@@ -36,7 +36,7 @@ const fakeInterviews: Array<IOrderItem> = [
 
 export const ordersRepository = {
 
-    getOrdersForAdmin (orderId: string): Promise<Array<IOrderItem>> {
+    getOrdersForAdmin (orderId?: string): Promise<Array<IOrderItem>> {
         return Promise.resolve<Array<IOrderItem>>(fakeInterviews.filter(i => i.id === orderId));
     },
     createOrder(interview: IOrderItem) {

@@ -3,7 +3,7 @@ import {IPizzaItem, IPizzaToCreate} from "../../Core/pizzas-types";
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-    filter: Array,
+    filter: Number,
     name: String,
     photo: String,
     photo_thumbnail: String,
@@ -27,6 +27,7 @@ export const pizzasRepository = {
         return Pizza.deleteOne({_id: pizzaId});
     },
     addPizza(pizza: IPizzaToCreate): Promise<any> {
+        debugger
         const newPizza = new Pizza({
             filter: pizza.filter,
             name: pizza.name,

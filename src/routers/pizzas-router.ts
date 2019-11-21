@@ -1,5 +1,6 @@
 import Router from 'koa-router';
 import {pizzasRepository} from "../dal/pizzas-repository";
+import {IPizzaToCreate} from "../../Core/pizzas-types";
 
 const router = new Router({
     prefix: '/pizzas'
@@ -11,7 +12,7 @@ router.get('/', async (ctx: any, next: any)=>{
     console.log('getPizzas');
 });
 router.post(`/`, async (ctx: any, next: any) => {
-    const newPizza = ctx.body;
+    const newPizza = ctx.request.body.formData as IPizzaToCreate;
     const createdPizza = await pizzasRepository.addPizza(newPizza);
     ctx.body = createdPizza;
 });

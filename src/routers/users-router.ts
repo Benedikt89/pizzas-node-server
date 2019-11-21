@@ -9,14 +9,14 @@ const router = new Router({
 
 
 router.get(`/`, async (ctx: any, next: any) => {
-    const developers = await pizzasRepository.getDevelopers();
+    const developers = await pizzasRepository.getPizzas();
     ctx.body = developers;
 });
 
 router.get(`/:developerId/interviews`, async (ctx: any, next: any) => {
     // debugger;
-    const developers = await ordersRepository.getInterviewsForDeveloper(ctx.params.developerId);
-    ctx.body = developers;
+    // const developers = await ordersRepository.getOrdersForAdmin(ctx.params.developerId);
+    // ctx.body = developers;
 });
 
 
