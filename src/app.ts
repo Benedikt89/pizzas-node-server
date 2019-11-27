@@ -1,6 +1,6 @@
 import Koa from "koa";
 import koaBody from "koa-body";
-import pizzasRouter from "./routers/pizzas-router";
+import productsRouter from "./routers/products-router";
 import usersRouter from "./routers/users-router";
 import ordersRouter from "./routers/orders-router";
 import cors from "@koa/cors";
@@ -18,8 +18,24 @@ const app = new Koa();
 app
     .use(cors())
     .use(koaBody())
-    .use(pizzasRouter.routes())
+    .use(productsRouter.routes())
     .use(usersRouter.routes())
-    .use(ordersRouter.routes());
-
+    .use(ordersRouter.routes())
+    .use((ctx: any, next: any)=>{
+        const error = new Error("Not Found");
+        // @ts-ignore
+        error.status(404);
+        next(error);
+    })
+    .use(async (ctx:any, next: any) => {
+        try {
+            await next();
+        } catch (err) {
+            // will only respond with JSON
+            ctx.status = err.statusCode || err.status || 500;
+            ctx.body = {
+                message: err.message
+            };
+        }
+    });
 app.listen(8000);

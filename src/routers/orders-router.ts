@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import {pizzasRepository} from "../dal/pizzas-repository";
+import {productsRepository} from "../dal/products-repository";
 import {ordersRepository } from "../dal/orders-repository";
 
 const router = new Router({

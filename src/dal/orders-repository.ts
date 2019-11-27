@@ -1,4 +1,4 @@
-import {IOrderItem} from "../../Core/orders-types";
+import {IOrderItem} from "../../../Core/orders-types";
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({

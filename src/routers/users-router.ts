@@ -1,15 +1,15 @@
 import Router from 'koa-router';
-import {pizzasRepository} from "../dal/pizzas-repository";
+import {productsRepository} from "../dal/products-repository";
 import {ordersRepository} from "../dal/orders-repository";
 
 const router = new Router({
-    prefix: '/developers'
+    prefix: '/users'
 });
 
 
 
 router.get(`/`, async (ctx: any, next: any) => {
-    const developers = await pizzasRepository.getPizzas();
+    const developers = await productsRepository.getProducts();
     ctx.body = developers;
 });
 
