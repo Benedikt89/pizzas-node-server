@@ -8,6 +8,8 @@
 # testing
 /coverage
 
+/static/images
+
 # production
 /build
 /dist
@@ -19,7 +21,7 @@
 .env.test.local
 .env.production.local
 /.idea
-
+.idea
 
 
 npm-debug.log*

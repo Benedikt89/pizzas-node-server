@@ -64,7 +64,6 @@ router.delete('/:id', async (req:any, res:any)=>{
     res.send(204)
 });
 router.post('/', upload.single('image'), async (req:any, res:any, next:any)=>{
-    debugger;
     const file = req.file;
     if( !file ){
         const error:any = new Error('Please upload a file');

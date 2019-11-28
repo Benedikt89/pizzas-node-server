@@ -18,20 +18,20 @@ var router = express.Router();
 
 const options:cors.CorsOptions = {
     allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token"],
-    credentials: true,
+    credentials: false,
     methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
     origin: "http://127.0.0.1:3000/",
     preflightContinue: false
 };
 
 const app: express.Application = express();
-router.use(cors(options));
+app.use(cors());
 app.use(morgan('dev'));
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/static'));
-app.use('/static/uploads', express.static(__dirname + '/static/uploads'));
+app.use('/static/images', express.static(__dirname + '/static/images'));
 
 app.get('/', (req:any, res:any)=>{
     res.sendFile(__dirname + '/static/index.html');
@@ -39,7 +39,6 @@ app.get('/', (req:any, res:any)=>{
 
 app.use('/pizzas', products);
 
-router.options("*", cors(options));
 //middleware
 app.use((req:any, res:any, next:any)=>{
     const error = new Error("not found");

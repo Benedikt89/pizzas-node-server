@@ -42,15 +42,16 @@ export const productsRepository = {
     deleteProduct(poroductId: string): Promise<any> {
         return Product.deleteOne({_id: poroductId});
     },
-    addProduct(poroduct: IProductToCreate): Promise<any> {
+    addProduct(product: any): Promise<any> {
         debugger;
         const newProduct = new Product({
             id: new mongoose.Types.ObjectId(),
-            name: poroduct.name,
-            // price: poroduct.price,
-            // size: poroduct.size,
-            // text_long: poroduct.text_long,
-            // text_short: poroduct.text_short
+            name: product.name,
+            photo: product.photo,
+            // price: product.price,
+            // size: product.size,
+            // text_long: product.text_long,
+            // text_short: product.text_short
         });
         return newProduct.save()
     }
