@@ -2,9 +2,41 @@ import {usersRepository} from "../dal/users-repository";
 
 const express = require("express");
 const router = express.Router();
+const bcrypt = require('bcryptjs');
 
+router.post('/login', async (req: any, res: any, next: any) => {
+    try{
+        const user = req.body;
+        let userFind = await usersRepository.getUser(user);
+        if (userFind.length < 1 || user.password === userFind.password)
+            return res.status(401).json({
+                message: 'phone or password not correct'
+            });
+        bcrypt.compare(user.password, userFind[0].password, (err:any, result:any)=>{
+            if (err) {
+                return res.status(401).json({
+                    message: 'phone or password not correct'
+                });
+            }
+            if (result) {
+                return res.status(200).json({
+                    message: 'Auth Successful'
+                })
+            }
+            res.status(401).json({
+                message: 'phone or password not correct'
+            });
+        });
 
-router.post(`/register`, async (req:any, res:any, next:any) => {
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        })
+    }
+});
+
+router.post(`/`, async (req: any, res: any, next: any) => {
     try {
         const user = req.body;
         let userFind = await usersRepository.getUser(user);
@@ -29,7 +61,6 @@ router.get(`/:developerId/interviews`, async (ctx: any, next: any) => {
     // const developers = await ordersRepository.getOrdersForAdmin(ctx.params.developerId);
     // ctx.body = developers;
 });
-
 
 
 export default router;

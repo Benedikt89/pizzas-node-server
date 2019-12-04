@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
-    phone: {type: String, required: true},
+    phone: {type: String, required: true, unique: true, mach: /[0-9]/},
     password: {type: String, required: true},
     // size: {type: Number, required: true},
     // text_long: {type:String, required: true},
