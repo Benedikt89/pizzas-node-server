@@ -1,16 +1,27 @@
-import Router from 'koa-router';
-import {productsRepository} from "../dal/products-repository";
-import {ordersRepository} from "../dal/orders-repository";
+import {usersRepository} from "../dal/users-repository";
 
-const router = new Router({
-    prefix: '/users'
-});
+const express = require("express");
+const router = express.Router();
 
 
-
-router.get(`/`, async (ctx: any, next: any) => {
-    const developers = await productsRepository.getProducts();
-    ctx.body = developers;
+router.post(`/register`, async (req:any, res:any, next:any) => {
+    try {
+        const user = req.body;
+        let userFind = await usersRepository.getUser(user);
+        // @ts-ignore
+        if (!userFind.length >= 1) {
+            const newUser = await usersRepository.addUser(user);
+            console.log(newUser);
+            res.send(newUser).status(201)
+        } else {
+            return res.status(409).json({message: "This Phone Already Used"});
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        })
+    }
 });
 
 router.get(`/:developerId/interviews`, async (ctx: any, next: any) => {

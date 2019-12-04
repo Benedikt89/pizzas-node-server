@@ -5,6 +5,7 @@ import products from "./src/routers/products-router";
 import users from "./src/routers/users-router";
 import bodyParser from 'body-parser';
 
+//Database connections
 const mongoose = require("mongoose");
 mongoose.connect('mongodb://localhost/pizzas', {useNewUrlParser: true});
 mongoose.Promise = global.Promise;
@@ -13,8 +14,6 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
 db.once('open', function () {
 });
-
-var router = express.Router();
 
 const options:cors.CorsOptions = {
     allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token"],
@@ -30,14 +29,19 @@ app.use(morgan('dev'));
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+//local Static Files
 app.use(express.static(__dirname + '/static'));
 app.use('/static/images', express.static(__dirname + '/static/images'));
 
+//sendStatic
 app.get('/', (req:any, res:any)=>{
     res.sendFile(__dirname + '/static/index.html');
 });
 
+//routers
 app.use('/pizzas', products);
+app.use('/users', users);
 
 //middleware
 app.use((req:any, res:any, next:any)=>{

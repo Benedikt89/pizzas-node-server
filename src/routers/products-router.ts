@@ -1,5 +1,4 @@
 import {productsRepository} from "../dal/products-repository";
-import cors from "cors";
 
 const express = require("express");
 const router = express.Router();
@@ -47,20 +46,20 @@ router.get('/', async (req:any, res:any) =>{
 });
 router.get('/:id', async (req:any, res:any)=>{
     const productId = req.params.id;
-    let user = await productsRepository.getProducts(productId);
-    if (user) res.send(user);
+    let product = await productsRepository.getProducts(productId);
+    if (product) res.send(product);
     res.send(404)
 });
 
 router.put('/', async (req:any, res:any)=>{
     let newProductName = req.body.name;
-    const userId = req.body.id;
-    await productsRepository.updateProduct(userId, newProductName);
+    const productId = req.body.id;
+    await productsRepository.updateProduct(productId, newProductName);
     res.send(204)
 });
 router.delete('/:id', async (req:any, res:any)=>{
-    const userId = req.params.id;
-    await productsRepository.deleteProduct(userId);
+    const productId = req.params.id;
+    await productsRepository.deleteProduct(productId);
     res.send(204)
 });
 router.post('/', upload.single('image'), async (req:any, res:any, next:any)=>{
