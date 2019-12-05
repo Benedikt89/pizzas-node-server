@@ -1,11 +1,12 @@
 import {usersRepository} from "../dal/users-repository";
 
-const express = require("express");
+import express from "express";
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 router.post('/login', async (req: any, res: any, next: any) => {
+
     try {
         const user = req.body;
         let userFind = await usersRepository.getUser(user.phone);
@@ -20,20 +21,24 @@ router.post('/login', async (req: any, res: any, next: any) => {
                 });
             }
             if (result) {
-                const token = jwt.sign({
-                        phone: userFind[0].phone,
-                        userId: userFind[0].id
-                    },
-                    process.env.JWT_KEY,
-                    {
-                        expiresIn: "1h"
-                    },
-                );
+                req.session.user_id = user._id;
+
+                // @ts-ignore
+                var CSRFToken = uuid.v4();
+                req.session.csrfToken = CSRFToken;
+
+                // const token = jwt.sign({
+                //         phone: userFind[0].phone,
+                //         userId: userFind[0].id
+                //     },
+                //     process.env.JWT_KEY,
+                //     {
+                //         expiresIn: "1h"
+                //     },
+                // );
                 return res.status(200).json({
                     message: 'Auth Successful',
-                    token: token
-                }).header({
-
+                    token: CSRFToken
                 })
             }
             res.status(401).json({
@@ -68,12 +73,5 @@ router.post(`/`, async (req: any, res: any, next: any) => {
         })
     }
 });
-
-router.get(`/:developerId/interviews`, async (ctx: any, next: any) => {
-    // debugger;
-    // const developers = await ordersRepository.getOrdersForAdmin(ctx.params.developerId);
-    // ctx.body = developers;
-});
-
 
 export default router;

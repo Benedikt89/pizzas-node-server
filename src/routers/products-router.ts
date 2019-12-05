@@ -62,7 +62,7 @@ router.delete('/:id', async (req:any, res:any)=>{
     await productsRepository.deleteProduct(productId);
     res.send(204)
 });
-router.post('/', checkAuth, upload.single('image'), async (req:any, res:any, next:any)=>{
+router.post('/', upload.single('image'), async (req:any, res:any, next:any)=>{
     const file = req.file;
     if( !file ){
         const error:any = new Error('Please upload a file');
