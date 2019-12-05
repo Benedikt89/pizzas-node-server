@@ -2,7 +2,7 @@ import {productsRepository} from "../dal/products-repository";
 
 const express = require("express");
 const router = express.Router();
-
+const checkAuth = require("./../middleware/check-auth");
 const multer = require("multer");
 
 interface Error{
@@ -62,7 +62,7 @@ router.delete('/:id', async (req:any, res:any)=>{
     await productsRepository.deleteProduct(productId);
     res.send(204)
 });
-router.post('/', upload.single('image'), async (req:any, res:any, next:any)=>{
+router.post('/', checkAuth, upload.single('image'), async (req:any, res:any, next:any)=>{
     const file = req.file;
     if( !file ){
         const error:any = new Error('Please upload a file');

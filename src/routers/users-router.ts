@@ -3,24 +3,37 @@ import {usersRepository} from "../dal/users-repository";
 const express = require("express");
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 router.post('/login', async (req: any, res: any, next: any) => {
-    try{
+    try {
         const user = req.body;
-        let userFind = await usersRepository.getUser(user);
+        let userFind = await usersRepository.getUser(user.phone);
         if (userFind.length < 1 || user.password === userFind.password)
             return res.status(401).json({
                 message: 'phone or password not correct'
             });
-        bcrypt.compare(user.password, userFind[0].password, (err:any, result:any)=>{
+        bcrypt.compare(user.password, userFind[0].password, (err: any, result: any) => {
             if (err) {
                 return res.status(401).json({
                     message: 'phone or password not correct'
                 });
             }
             if (result) {
+                const token = jwt.sign({
+                        phone: userFind[0].phone,
+                        userId: userFind[0].id
+                    },
+                    process.env.JWT_KEY,
+                    {
+                        expiresIn: "1h"
+                    },
+                );
                 return res.status(200).json({
-                    message: 'Auth Successful'
+                    message: 'Auth Successful',
+                    token: token
+                }).header({
+
                 })
             }
             res.status(401).json({
@@ -39,7 +52,7 @@ router.post('/login', async (req: any, res: any, next: any) => {
 router.post(`/`, async (req: any, res: any, next: any) => {
     try {
         const user = req.body;
-        let userFind = await usersRepository.getUser(user);
+        let userFind = await usersRepository.getUser(user.phone);
         // @ts-ignore
         if (!userFind.length >= 1) {
             const newUser = await usersRepository.addUser(user);

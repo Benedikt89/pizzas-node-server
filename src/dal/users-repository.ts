@@ -35,7 +35,7 @@ export const usersRepository = {
             });
         })
     },
-    getUser(user: any):Promise<any> {
-        return User.find({phone: user.phone})
+    getUser(userPhone: string):Promise<any> {
+        return User.find({phone: userPhone})
     }
 };
