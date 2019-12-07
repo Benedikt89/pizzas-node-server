@@ -1,38 +1,14 @@
 import {productsRepository} from "../dal/products-repository";
-
-const express = require("express");
-const router = express.Router();
+import {upload} from "../dal/ImageHolder";
+import express from "express";
 const checkAuth = require("./../middleware/check-auth");
-const multer = require("multer");
+
+const router = express.Router();
 
 interface Error{
     status?: number;
 }
 
-const storage = multer.diskStorage({
-    destination: (req:any, file:any, cb:any) => {
-        let type = req.params.type;
-        let path = `static/images/${type}`;
-        //fs.mkdirsSync(path);
-        cb(null, `static/images`);
-    },
-    filename: function (req:any, file:any, cb:any) {
-        cb(null, Date.now()+ file.originalname)
-    }
-});
-
-const fileFilter = (req:any, file:any, cb:any) => {
-    if (file.mimetype === 'image/png'|| file.mimetype === 'image/jpg'){
-        cb(null, true);
-    } else {
-        cb(new Error('message'), false);
-    }
-};
-const upload = multer({
-    storage: storage,
-    limits: {fileSize: 1024 * 1024 * 5},
-//    fileFilter: fileFilter
-});
 
 router.get('/', async (req:any, res:any) =>{
     try {
@@ -57,11 +33,13 @@ router.put('/', async (req:any, res:any)=>{
     await productsRepository.updateProduct(productId, newProductName);
     res.send(204)
 });
+
 router.delete('/:id', async (req:any, res:any)=>{
     const productId = req.params.id;
     await productsRepository.deleteProduct(productId);
     res.send(204)
 });
+
 router.post('/', upload.single('image'), async (req:any, res:any, next:any)=>{
     const file = req.file;
     if( !file ){
