@@ -12,7 +12,7 @@ interface Error{
 
 router.get('/', async (req:any, res:any) =>{
     try {
-        let products = await productsRepository.getProducts(req.query.search);
+        let products = await productsRepository.getProducts();
         res.send(products);
         console.log('get Products');
     }
@@ -27,20 +27,20 @@ router.get('/:id', async (req:any, res:any)=>{
     res.send(404)
 });
 
-router.put('/', async (req:any, res:any)=>{
+router.put('/', checkAuth, async (req:any, res:any)=>{
     let newProductName = req.body.name;
     const productId = req.body.id;
     await productsRepository.updateProduct(productId, newProductName);
     res.send(204)
 });
 
-router.delete('/:id', async (req:any, res:any)=>{
+router.delete('/:id', checkAuth, async (req:any, res:any)=>{
     const productId = req.params.id;
     await productsRepository.deleteProduct(productId);
     res.send(204)
 });
 
-router.post('/', upload.single('image'), async (req:any, res:any, next:any)=>{
+router.post('/', checkAuth, upload.single('image'), async (req:any, res:any, next:any)=>{
     const file = req.file;
     if( !file ){
         const error:any = new Error('Please upload a file');

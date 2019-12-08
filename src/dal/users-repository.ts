@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require('bcryptjs');
-const User = require('../dal/models/User');
+import User from '../dal/models/User';
 
 
 export const usersRepository = {
@@ -23,5 +23,8 @@ export const usersRepository = {
     },
     getUser(userPhone: string): Promise<any> {
         return User.find({phone: userPhone})
+    },
+    getUsers(): Promise<any> {
+        return User.find()
     }
 };
