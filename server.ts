@@ -3,6 +3,7 @@ import express from "express";
 import bodyParser from 'body-parser';
 const session = require('express-session');
 import cors from "cors";
+import cookieParser from 'cookie-parser';
 const mongoose = require("mongoose");
 import morgan from 'morgan';
 
@@ -30,13 +31,17 @@ db.on('error', console.error.bind(console, 'connection error'));
 db.once('open', function () {
 });
 
-
+const corsOptions = {
+    origin: true,
+    credentials: true,
+};
 
 //Initiate app
 const app: express.Application = express();
 
 
-app.use(cors());
+app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -46,6 +51,10 @@ app.use(session({
     maxAge: 60000,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+        secure: true,
+        httpOnly: false
+    }
 }));
 
 //routers

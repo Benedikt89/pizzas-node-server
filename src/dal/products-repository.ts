@@ -1,58 +1,60 @@
-import {IProductItem, IProductToCreate} from "../../../Core/products-types";
-
-const mongoose = require("mongoose");
-
-const productSchema = new mongoose.Schema({
-    name: {type:String, required: true},
-    photo: {type:String, required: true},
-    // price: {type: Number, required: true},
-    // size: {type: Number, required: true},
-    // text_long: {type:String, required: true},
-    // text_short: {type:String, required: true},
-});
-const Product = mongoose.model('pizzas', productSchema);
-
+import {I_ProductsResponse, IProductItem, IProductToCreate} from "../../../Core/products-types";
+import Product, {IMongoose_Product} from "./models/Product"
 
 export const productsRepository = {
 
-    getProducts(search?:any): Promise<Array<IProductItem>> {
-        if (!search) {
-            return Product.find()
-                .select('name price id photo')
-                .exec()
-                .then((docs: any) => {
+    async getProducts(search?: string): Promise<I_ProductsResponse> {
+        let result = await Product.find();
+        if (search) {
+            result = await Product.find({_id: new RegExp(search)});
+        }
+        return new Promise((resolve, reject) => {
+            resolve(
+                {
+                count: +result.length,
+                products: result.map((doc: IMongoose_Product) => {
                     return {
-                        count: docs.length,
-                        pizzas: docs.map((doc: any) => {
-                            return {
-                                id: doc.id,
-                                name: doc.name,
-                                price: doc.price,
-                                photo: `http://localhost:8000/${doc.photo}`
-                            }
-                        })
+                        id: doc.id,
+                        name: doc.name,
+                        price: +doc.price,
+                        photo: `http://localhost:8000/${doc.photo}`,
+                        size: +doc.size,
+                        text_long: doc.text_long,
+                        text_short: doc.text_short,
                     }
                 })
-        }
-        else return Product.find({_id: new RegExp(search)})
+            }
+            )
+        })
     },
-    updateProduct(poroductId: string, newProduct: any): Promise<any> {
-        return Product.update({_id: poroductId}, newProduct)
-    },
-    deleteProduct(poroductId: string): Promise<any> {
-        return Product.deleteOne({_id: poroductId});
-    },
-    addProduct(product: any): Promise<any> {
-        debugger;
+
+    async addProduct(product: IProductToCreate): Promise<any> {
         const newProduct = new Product({
-            id: new mongoose.Types.ObjectId(),
             name: product.name,
             photo: product.photo,
-            // price: product.price,
-            // size: product.size,
-            // text_long: product.text_long,
-            // text_short: product.text_short
+            price: product.price,
+            size: product.size,
+            text_long: product.text_long,
+            text_short: product.text_short
         });
-        return newProduct.save()
-    }
+        let doc = await newProduct.save();
+        return new Promise((resolve => ({
+                id: doc.id,
+                name: doc.name,
+                price: +doc.price,
+                photo: `http://localhost:8000/${doc.photo}`,
+                size: +doc.size,
+                text_long: doc.text_long,
+                text_short: doc.text_short,
+        })))
+    },
+    async updateProduct(poroductId: string, newProduct: any): Promise<IProductItem> {
+        return await Product.update({_id: poroductId}, newProduct)
+    },
+
+    async deleteProduct(poroductId: string): Promise<any> {
+        return Product.deleteOne({_id: poroductId});
+    },
+
+
 };
