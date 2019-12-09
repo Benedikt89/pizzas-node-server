@@ -28,7 +28,7 @@ export const productsRepository = {
         })
     },
 
-    async addProduct(product: IProductToCreate): Promise<any> {
+    async addProduct(product: IProductToCreate): Promise<I_ProductsResponse> {
         const newProduct = new Product({
             name: product.name,
             photo: product.photo,
@@ -48,8 +48,8 @@ export const productsRepository = {
                 text_short: doc.text_short,
         })))
     },
-    async updateProduct(poroductId: string, newProduct: any): Promise<IProductItem> {
-        return await Product.update({_id: poroductId}, newProduct)
+    async updateProduct(newProduct: IProductItem): Promise<IProductItem> {
+        return await Product.update({_id: newProduct.id}, newProduct)
     },
 
     async deleteProduct(poroductId: string): Promise<any> {

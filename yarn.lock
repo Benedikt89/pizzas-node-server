@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@types/bcryptjs@^2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@types/bcryptjs/-/bcryptjs-2.4.2.tgz#e3530eac9dd136bfdfb0e43df2c4c5ce1f77dfae"
+  integrity sha512-LiMQ6EOPob/4yUL66SZzu6Yh77cbzJFYll+ZfaPiPPFswtIlA/Fs1MzdKYA7JApHU49zQTbJGX3PDmCpIdDBRQ==
+
 "@types/body-parser@*", "@types/body-parser@^1.17.1":
   version "1.17.1"
   resolved "https://registry.yarnpkg.com/@types/body-parser/-/body-parser-1.17.1.tgz#18fcf61768fb5c30ccc508c21d6fd2e8b3bf7897"
@@ -46,7 +51,7 @@
     "@types/express" "*"
     "@types/express-unless" "*"
 
-"@types/express-serve-static-core@*":
+"@types/express-serve-static-core@*", "@types/express-serve-static-core@^4.17.0":
   version "4.17.0"
   resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.17.0.tgz#e80c25903df5800e926402b7e8267a675c54a281"
   integrity sha512-Xnub7w57uvcBqFdIGoRg1KhNOeEj0vB6ykUM7uFWyxvbdE89GFyqgmUcanAriMr4YOxNFZBAWkfcWIb4WBPt3g==
@@ -77,6 +82,13 @@
     "@types/body-parser" "*"
     "@types/express-serve-static-core" "*"
     "@types/serve-static" "*"
+
+"@types/jsonwebtoken@^8.3.5":
+  version "8.3.5"
+  resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-8.3.5.tgz#ff9be1151a844095df1ff5f723651298c2c07659"
+  integrity sha512-VGM1gb+LwsQ5EPevvbvdnKncajBdYqNcrvixBif1BsiDQiSF1q+j4bBTvKC6Bt9n2kqNSx+yNTY2TVJ360E7EQ==
+  dependencies:
+    "@types/node" "*"
 
 "@types/mime@*":
   version "2.0.1"
@@ -128,7 +140,7 @@
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.3.tgz#7ee330ba7caafb98090bece86a5ee44115904c2c"
   integrity sha512-ewFXqrQHlFsgc09MK5jP5iR7vumV/BYayNC6PgJO2LPe8vrnNFyjQjSppfEngITi0qvfKtzFvgKymGheFM9UOA==
 
-"@types/serve-static@*":
+"@types/serve-static@*", "@types/serve-static@^1.13.3":
   version "1.13.3"
   resolved "https://registry.yarnpkg.com/@types/serve-static/-/serve-static-1.13.3.tgz#eb7e1c41c4468272557e897e9171ded5e2ded9d1"
   integrity sha512-oprSwp094zOglVrXdlo/4bAHtKTAxX6VT8FOZlBKrmyLbNvE1zxZyJ6yikMVtHIvwP45+ZQGJn+FdXGKTozq0g==
@@ -787,6 +799,11 @@ express-jwt@^5.3.1:
     express-unless "^0.3.0"
     jsonwebtoken "^8.1.0"
     lodash.set "^4.0.0"
+
+express-serve-static-core@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/express-serve-static-core/-/express-serve-static-core-0.1.1.tgz#222358112a79bc9fbe00838232e8cd2e3132ef37"
+  integrity sha1-IiNYESp5vJ++AIOCMujNLjEy7zc=
 
 express-session@^1.17.0:
   version "1.17.0"

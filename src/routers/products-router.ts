@@ -28,9 +28,8 @@ router.get('/:id', async (req:any, res:any)=>{
 });
 
 router.put('/', checkAuth, async (req:any, res:any)=>{
-    let newProductName = req.body.name;
-    const productId = req.body.id;
-    await productsRepository.updateProduct(productId, newProductName);
+    let newProduct = req.body;
+    await productsRepository.updateProduct(newProduct);
     res.send(204)
 });
 

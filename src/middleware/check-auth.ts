@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
-module.exports = (req:any, res: any, next:any) => {
+module.exports = (req:any, res: any, next: ()=>void) => {
     try {
         // Express headers are auto converted to lowercase
         let token = req.headers['x-access-token'] || req.headers['authorization'];
@@ -8,7 +8,8 @@ module.exports = (req:any, res: any, next:any) => {
             // Remove Bearer from string
             token = token.slice(7, token.length);
         }
-        req.userVeryfied = jwt.verify(token, process.env.JWT_KEY);
+        let KEY = process.env.JWT_KEY ? process.env.JWT_KEY : "watsuuuup";
+            req.userVeryfied = jwt.verify(token, KEY);
     } catch (err) {
         return res.status(401).json({
             message: 'Auth Failed'

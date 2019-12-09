@@ -11,7 +11,6 @@ export interface IMongoose_Product extends Document {
 }
 
 const productSchema:Schema = new Schema({
-    id: new mongoose.Types.ObjectId(),
     name: {type:String, required: true},
     photo: {type:String, required: true},
     price: {type: Number, required: true},

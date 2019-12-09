@@ -2,8 +2,13 @@ import {usersRepository} from "../dal/users-repository";
 
 import express from "express";
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+
+export interface I_LoginResponce {
+    id: string,
+    phone: string
+}
 
 router.post('/login', async (req: any, res: any, next: any) => {
     try {
@@ -26,6 +31,7 @@ router.post('/login', async (req: any, res: any, next: any) => {
                     phone: userFind[0].phone,
                     userId: userFind[0].id
                 },
+                // @ts-ignore
                 process.env.JWT_KEY,
                 {
                     expiresIn: "1h"
