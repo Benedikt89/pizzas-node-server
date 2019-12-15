@@ -1,4 +1,4 @@
-import express from "express";
+import express, {NextFunction, Request, Response} from "express";
 //const path = require('path');
 import bodyParser from 'body-parser';
 const session = require('express-session');
@@ -6,7 +6,6 @@ import cors from "cors";
 import cookieParser from 'cookie-parser';
 const mongoose = require("mongoose");
 import morgan from 'morgan';
-
 
 
 // setup route middlewares
@@ -71,20 +70,20 @@ app.use('/static/images', express.static(__dirname + '/static/images'));
 
 
 //sendStatic
-app.get('/', (req:any, res:any) => {
+app.get('/', (req: Request, res: Response) => {
     res.sendFile(__dirname + '/static/index.html');
 });
 
 
 //Error handlers & middlewares
-app.use((req: express.Request, res: express.Response, next: express.NextFunction)=>{
+app.use((req: Request, res: Response, next: NextFunction)=>{
     const error = new Error("not found");
     // @ts-ignore
     error.status = 404;
     next(error);
 });
 
-app.use(({error, req, res, next}:IExpressProps)=>{
+app.use((error: any, req: Request, res: Response, next: NextFunction)=>{
     res.status(error.status || 500);
     res.json({
         error:{

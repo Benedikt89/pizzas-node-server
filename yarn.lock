@@ -103,10 +103,18 @@
     "@types/bson" "*"
     "@types/node" "*"
 
-"@types/mongoose@^5.5.32":
-  version "5.5.32"
-  resolved "https://registry.yarnpkg.com/@types/mongoose/-/mongoose-5.5.32.tgz#8a76c5be029086c1225bf88ed3ca83f01181121f"
-  integrity sha512-2BemWy7SynT87deweqc2eCzg6pRyTVlnnMat2JxsTNoyeSFKC27b19qBTeKRfBVt+SjtaWd/ud4faUaObONwBA==
+"@types/mongodb@^3.3.12":
+  version "3.3.12"
+  resolved "https://registry.yarnpkg.com/@types/mongodb/-/mongodb-3.3.12.tgz#c5afa2de5ee5558603ecee8c9366e86e24576703"
+  integrity sha512-gWIdrA8YKC4OetBk4eT5Zsp4p3oy/BJQKt80tXfgPnfBuLigumcmwNZseVSkLQJ3XkN/1OR0/kIunGWlew3rmQ==
+  dependencies:
+    "@types/bson" "*"
+    "@types/node" "*"
+
+"@types/mongoose@^5.5.34":
+  version "5.5.34"
+  resolved "https://registry.yarnpkg.com/@types/mongoose/-/mongoose-5.5.34.tgz#b77fdd8f5a80d1315c47a53d9166c6ff95f63898"
+  integrity sha512-XSXKMIZimxx8q17RGQArawrTVI8021PPbP21WEq71YTUMpVuaJaN9yFQll5KtEif5Jw1cphxEFkNwrDmuG+NFA==
   dependencies:
     "@types/mongodb" "*"
     "@types/node" "*"
@@ -799,11 +807,6 @@ express-jwt@^5.3.1:
     express-unless "^0.3.0"
     jsonwebtoken "^8.1.0"
     lodash.set "^4.0.0"
-
-express-serve-static-core@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/express-serve-static-core/-/express-serve-static-core-0.1.1.tgz#222358112a79bc9fbe00838232e8cd2e3132ef37"
-  integrity sha1-IiNYESp5vJ++AIOCMujNLjEy7zc=
 
 express-session@^1.17.0:
   version "1.17.0"
