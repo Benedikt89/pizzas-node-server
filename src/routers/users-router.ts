@@ -37,6 +37,7 @@ router.post('/login', async (req: any, res: any, next: any) => {
                     expiresIn: "1h"
                 },
             );
+            res.cookie("x-access-token" , token);
             return res.status(200).json({
                 message: 'Auth Successful',
                 token: token

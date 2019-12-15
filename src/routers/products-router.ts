@@ -15,6 +15,7 @@ router.get('/', async (req:any, res:any) =>{
         let products = await productsRepository.getProducts();
         res.send(products);
         console.log('get Products');
+        console.log("Cookies :  ", req.cookies);
     }
     catch (e) {
         res.send(e.message)

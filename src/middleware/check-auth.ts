@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 module.exports = (req:any, res: any, next: ()=>void) => {
     try {
         // Express headers are auto converted to lowercase
-        let token = req.headers['x-access-token'] || req.headers['authorization'];
+        let token = req.cookies['x-access-token'] || req.headers['authorization'];
         if (token.startsWith('Bearer ')) {
             // Remove Bearer from string
             token = token.slice(7, token.length);
