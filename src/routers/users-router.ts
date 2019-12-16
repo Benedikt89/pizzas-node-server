@@ -1,6 +1,6 @@
 import {usersRepository} from "../dal/users-repository";
 
-import express from "express";
+import express, {NextFunction, Request, Response} from "express";
 const router = express.Router();
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -10,7 +10,7 @@ export interface I_LoginResponce {
     phone: string
 }
 
-router.post('/login', async (req: any, res: any, next: any) => {
+router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = req.body;
         let userFind = await usersRepository.getUser(user.phone);
@@ -25,6 +25,7 @@ router.post('/login', async (req: any, res: any, next: any) => {
             });
         }
         if (compared) {
+            // @ts-ignore
             req.session.user_id = userFind[0].id;
 
             const token = jwt.sign({
@@ -37,10 +38,9 @@ router.post('/login', async (req: any, res: any, next: any) => {
                     expiresIn: "1h"
                 },
             );
-            res.cookie("x-access-token" , token);
+            res.cookie("x-access-token" , token, {maxAge : 99999});
             return res.status(200).json({
-                message: 'Auth Successful',
-                token: token
+                message: 'Auth Successful'
             })
         }
     } catch (err) {
@@ -49,6 +49,13 @@ router.post('/login', async (req: any, res: any, next: any) => {
             error: err
         })
     }
+});
+
+router.delete('/logout', (req: Request, res: Response, next: NextFunction) => {
+    res.clearCookie("x-access-token");
+    res.clearCookie("_csrf");
+    res.clearCookie("BENS_TOKEN");
+    res.send("success");
 });
 
 router.post(`/`, async (req: any, res: any, next: any) => {

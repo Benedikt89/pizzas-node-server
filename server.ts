@@ -4,22 +4,12 @@ import bodyParser from 'body-parser';
 const session = require('express-session');
 import cors from "cors";
 import cookieParser from 'cookie-parser';
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 import morgan from 'morgan';
 
-
-// setup route middlewares
+// setup routers
 import products from "./src/routers/products-router";
 import users from "./src/routers/users-router";
-
-
-export interface IExpressProps {
-    error?: any,
-    req: express.Request,
-    res: express.Response,
-    next?: express.NextFunction
-}
-
 
 //Database connections
 mongoose.connect('mongodb://localhost/pizzas', {useNewUrlParser: true, useUnifiedTopology: true});
@@ -44,9 +34,11 @@ app.use(cookieParser());
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+//adding session cookies
 app.use(session({
     secret: 'ssshhhhh',
-    name: 'BENS_TOKEN',
+    name: 'SESSION_TOKEN',
     maxAge: 60000,
     resave: false,
     saveUninitialized: false,
@@ -73,6 +65,7 @@ app.use('/static/images', express.static(__dirname + '/static/images'));
 app.get('/', (req: Request, res: Response) => {
     res.sendFile(__dirname + '/static/index.html');
 });
+
 
 
 //Error handlers & middlewares

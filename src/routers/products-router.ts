@@ -1,59 +1,74 @@
 import {productsRepository} from "../dal/products-repository";
 import {upload} from "../dal/ImageHolder";
-import express from "express";
+import express, {NextFunction, Request, Response} from "express";
+import * as fs from "fs";
+
 const checkAuth = require("./../middleware/check-auth");
 
 const router = express.Router();
 
-interface Error{
+interface Error {
     status?: number;
 }
 
 
-router.get('/', async (req:any, res:any) =>{
+router.get('/', async (req: Request, res: Response) => {
     try {
         let products = await productsRepository.getProducts();
         res.send(products);
         console.log('get Products');
         console.log("Cookies :  ", req.cookies);
-    }
-    catch (e) {
+    } catch (e) {
         res.send(e.message)
     }
 });
-router.get('/:id', async (req:any, res:any)=>{
+router.get('/:id', async (req: Request, res: Response) => {
     const productId = req.params.id;
     let product = await productsRepository.getProducts(productId);
     if (product) res.send(product);
     res.send(404)
 });
 
-router.put('/', checkAuth, async (req:any, res:any)=>{
+router.put('/', checkAuth, async (req: Request, res: Response) => {
     let newProduct = req.body;
     await productsRepository.updateProduct(newProduct);
     res.send(204)
 });
 
-router.delete('/:id', checkAuth, async (req:any, res:any)=>{
-    const productId = req.params.id;
-    await productsRepository.deleteProduct(productId);
-    res.send(204)
+router.delete('/:id', checkAuth, async (req: Request, res: Response) => {
+    try {
+        const productId = req.params.id;
+        let sss = await productsRepository.getProduct(productId);
+
+        await fs.unlink(`${sss.photo}`, (err) => {
+            if (err)
+                throw err;
+            console.log(`${sss.photo} was deleted`);
+        });
+        productsRepository.deleteProduct(productId);
+
+        return res.status(204).send(sss)
+    } catch (e) {
+        return res.status(400).send(e);
+    }
 });
 
-router.post('/', checkAuth, upload.single('image'), async (req:any, res:any, next:any)=>{
-    const file = req.file;
-    if( !file ){
-        const error:any = new Error('Please upload a file');
-        error.status = 400;
-        return next(error)
-    }
+router.post('/', checkAuth, upload.single('image'), async (req: Request, res: Response, next: NextFunction) => {
     try {
+        //checking file
+        const file = req.file;
+        if (!file) {
+            const error: any = new Error('Please upload a file');
+            error.status = 400;
+            return next(error)
+        }
+
         let product = {...req.body, photo: file.path};
         let result = await productsRepository.addProduct(product);
-        res.send(result);
-    } catch(error) {
+        return res.send(result);
+    } catch (error) {
         console.log(error);
-        res.send(400);
+        return res.status(400).send(error);
     }
 });
 

@@ -1,13 +1,14 @@
-import {IExpressProps} from "../../server";
+import {NextFunction, Request, Response} from "express";
 
-module.exports = (req:any, res:any, next:any) => {
+module.exports = (req:Request, res:Response, next:NextFunction) => {
     let sess;
 
     if (!req.session) {
 
     }
     sess = req.session;
-    sess.phone = req.body.phone;
-
+    if (sess) {
+        sess.phone = req.body.phone;
+    }
     next();
 };
