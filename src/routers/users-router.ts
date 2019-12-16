@@ -58,7 +58,7 @@ router.delete('/logout', (req: Request, res: Response, next: NextFunction) => {
     res.send("success");
 });
 
-router.post(`/`, async (req: any, res: any, next: any) => {
+router.post(`/`, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = req.body;
         let userFind = await usersRepository.getUser(user.phone);

@@ -7,12 +7,8 @@ const checkAuth = require("./../middleware/check-auth");
 
 const router = express.Router();
 
-interface Error {
-    status?: number;
-}
-
-
-router.get('/', async (req: Request, res: Response) => {
+router.get('/',
+    async (req: Request, res: Response) => {
     try {
         let products = await productsRepository.getProducts();
         res.send(products);
@@ -22,38 +18,42 @@ router.get('/', async (req: Request, res: Response) => {
         res.send(e.message)
     }
 });
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id',
+    async (req: Request, res: Response) => {
     const productId = req.params.id;
     let product = await productsRepository.getProducts(productId);
     if (product) res.send(product);
     res.send(404)
 });
 
-router.put('/', checkAuth, async (req: Request, res: Response) => {
+router.put('/', checkAuth,
+    async (req: Request, res: Response) => {
     let newProduct = req.body;
     await productsRepository.updateProduct(newProduct);
     res.send(204)
 });
 
-router.delete('/:id', checkAuth, async (req: Request, res: Response) => {
+router.delete('/:id', checkAuth,
+    async (req: Request, res: Response) => {
     try {
         const productId = req.params.id;
-        let sss = await productsRepository.getProduct(productId);
+        let founded = await productsRepository.getProduct(productId);
 
-        await fs.unlink(`${sss.photo}`, (err) => {
+        await fs.unlink(`${founded.photo}`, (err) => {
             if (err)
                 throw err;
-            console.log(`${sss.photo} was deleted`);
+            console.log(`${founded.photo} was deleted`);
         });
         productsRepository.deleteProduct(productId);
 
-        return res.status(204).send(sss)
+        return res.status(204).send(founded)
     } catch (e) {
         return res.status(400).send(e);
     }
 });
 
-router.post('/', checkAuth, upload.single('image'), async (req: Request, res: Response, next: NextFunction) => {
+router.post('/', checkAuth, upload.single('image'),
+    async (req: Request, res: Response, next: NextFunction) => {
     try {
         //checking file
         const file = req.file;
