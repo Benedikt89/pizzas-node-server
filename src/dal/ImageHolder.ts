@@ -1,10 +1,9 @@
 import multer from "multer";
-import {NextFunction, Request, Response} from "express";
 
 const storage = multer.diskStorage({
     destination: (req:any, file:any, cb:any) => {
         let type = req.params.type;
-        let path = `static/images/${type}`;
+        let path = `../static/images/${type}`;
         //fs.mkdirsSync(path);
         cb(null, `static/images`);
     },

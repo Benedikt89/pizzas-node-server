@@ -1,5 +1,4 @@
 import express, {NextFunction, Request, Response} from "express";
-//const path = require('path');
 import bodyParser from 'body-parser';
 const session = require('express-session');
 import cors from "cors";
@@ -8,8 +7,9 @@ import mongoose from "mongoose";
 import morgan from 'morgan';
 
 // setup routers
-import products from "./src/routers/products-router";
-import users from "./src/routers/users-router";
+import products from "./routers/products-router";
+import users from "./routers/users-router";
+import {imagesPath, staticPath} from "./config";
 
 //Database connections
 mongoose.connect('mongodb://localhost/pizzas', {useNewUrlParser: true, useUnifiedTopology: true});
@@ -49,21 +49,21 @@ app.use(session({
 }));
 
 //routers
-app.use('/users', users);
-app.use('/pizzas', products);
+app.use('/api/users', users);
+app.use('/api/pizzas', products);
 
 //Configure
 app.disable("x-powered-by");
 
 
 //local Static Files
-app.use(express.static(__dirname + '/static'));
-app.use('/static/images', express.static(__dirname + '/static/images'));
+app.use('/public', express.static(staticPath));
+app.use('/static/images', express.static(imagesPath));
 
 
 //sendStatic
 app.get('/', (req: Request, res: Response) => {
-    res.sendFile(__dirname + '/static/index.html');
+    res.sendFile(staticPath + '/index.html');
 });
 
 

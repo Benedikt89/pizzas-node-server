@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "app.ts",
   "scripts": {
-    "start-server": "nodemon --watch server.ts --exec ts-node server.ts",
-    "debug-server": "nodemon  --verbose --watch server.ts -e ts,json --exec node --inspect-brk -r ts-node/register ./server.ts",
+    "start-server": "nodemon --watch ./src --exec ts-node ./src/server.ts",
+    "debug-server": "nodemon  --verbose --watch ./src -e ts,json --exec node --inspect-brk -r ts-node/register ./src/server.ts",
     "watch": "tsc -w",
     "clean": "rimraf dist"
   },

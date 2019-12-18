@@ -40,7 +40,10 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
             );
             res.cookie("x-access-token" , token, {maxAge : 99999});
             return res.status(200).json({
-                message: 'Auth Successful'
+                message: 'Auth Successful',
+                userInfo: {
+                    userName: userFind[0].phone,
+                }
             })
         }
     } catch (err) {

@@ -2,8 +2,9 @@ import {productsRepository} from "../dal/products-repository";
 import {upload} from "../dal/ImageHolder";
 import express, {NextFunction, Request, Response} from "express";
 import * as fs from "fs";
+import {rootPath, staticPath} from "../config";
 
-const checkAuth = require("./../middleware/check-auth");
+const checkAuth = require("../middleware/check-auth");
 
 const router = express.Router();
 
@@ -33,13 +34,13 @@ router.put('/', checkAuth,
     res.send(204)
 });
 
-router.delete('/:id', checkAuth,
+router.delete('/:id',
     async (req: Request, res: Response) => {
     try {
         const productId = req.params.id;
         let founded = await productsRepository.getProduct(productId);
 
-        await fs.unlink(`${founded.photo}`, (err) => {
+        await fs.unlink(rootPath + `${founded.photo}`, (err) => {
             if (err)
                 throw err;
             console.log(`${founded.photo} was deleted`);
@@ -52,7 +53,7 @@ router.delete('/:id', checkAuth,
     }
 });
 
-router.post('/', checkAuth, upload.single('image'),
+router.post('/', upload.single('image'),
     async (req: Request, res: Response, next: NextFunction) => {
     try {
         //checking file
