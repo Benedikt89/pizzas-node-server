@@ -2,7 +2,7 @@ import {productsRepository} from "../dal/products-repository";
 import {upload} from "../dal/ImageHolder";
 import express, {NextFunction, Request, Response} from "express";
 import * as fs from "fs";
-import {rootPath, staticPath} from "../config";
+import {rootPath} from "../config";
 
 const checkAuth = require("../middleware/check-auth");
 
@@ -34,7 +34,7 @@ router.put('/', checkAuth,
     res.send(204)
 });
 
-router.delete('/:id',
+router.delete('/:id', checkAuth,
     async (req: Request, res: Response) => {
     try {
         const productId = req.params.id;
@@ -53,7 +53,7 @@ router.delete('/:id',
     }
 });
 
-router.post('/', upload.single('image'),
+router.post('/', checkAuth, upload.single('image'),
     async (req: Request, res: Response, next: NextFunction) => {
     try {
         //checking file

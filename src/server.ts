@@ -1,6 +1,6 @@
 import express, {NextFunction, Request, Response} from "express";
 import bodyParser from 'body-parser';
-const session = require('express-session');
+import session from 'express-session';
 import cors from "cors";
 import cookieParser from 'cookie-parser';
 import mongoose from "mongoose";
@@ -39,7 +39,6 @@ app.use(bodyParser.json());
 app.use(session({
     secret: 'ssshhhhh',
     name: 'SESSION_TOKEN',
-    maxAge: 60000,
     resave: false,
     saveUninitialized: false,
     cookie: {
