@@ -63,7 +63,7 @@ export const productsRepository = {
             id: doc.id,
             name: doc.name,
             price: +doc.price,
-            photo: `http://localhost:8000/${doc.photo}`,
+            photo: `${ENV_URL + doc.photo}`,
             size: +doc.size,
             text_long: doc.text_long,
             text_short: doc.text_short,

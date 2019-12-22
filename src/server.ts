@@ -46,7 +46,6 @@ app.use(session({
         httpOnly: false
     }
 }));
-
 //routers
 app.use('/api/users', users);
 app.use('/api/pizzas', products);
@@ -57,7 +56,7 @@ app.disable("x-powered-by");
 
 //local Static Files
 app.use('/public', express.static(staticPath));
-app.use('/static/images', express.static(imagesPath));
+app.use('/static/images/', express.static(imagesPath));
 
 
 //sendStatic

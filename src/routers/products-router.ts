@@ -14,7 +14,6 @@ router.get('/',
         let products = await productsRepository.getProducts();
         res.send(products);
         console.log('get Products');
-        console.log("Cookies :  ", req.cookies);
     } catch (e) {
         res.send(e.message)
     }
@@ -27,14 +26,15 @@ router.get('/:id',
     res.send(404)
 });
 
-router.put('/',
+router.put('/', checkAuth,
     async (req: Request, res: Response) => {
     let newProduct = req.body;
+    newProduct.photo = newProduct.photo.slice(22, newProduct.photo.length);
     await productsRepository.updateProduct(newProduct);
     res.send(204)
 });
 
-router.delete('/:id',
+router.delete('/:id', checkAuth,
     async (req: Request, res: Response) => {
     try {
         const productId = req.params.id;
@@ -53,7 +53,7 @@ router.delete('/:id',
     }
 });
 
-router.post('/', checkAuth, upload.single('image'),
+router.post('/', upload.single('image'),
     async (req: Request, res: Response, next: NextFunction) => {
     try {
         //checking file
@@ -64,7 +64,7 @@ router.post('/', checkAuth, upload.single('image'),
             return next(error)
         }
 
-        let product = {...req.body, photo: file.path};
+        let product = {...req.body, photo: file.path.replace(/\\+/g, "/")};
         let result = await productsRepository.addProduct(product);
         return res.send(result);
     } catch (error) {

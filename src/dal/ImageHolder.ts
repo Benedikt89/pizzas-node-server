@@ -4,7 +4,6 @@ const storage = multer.diskStorage({
     destination: (req:any, file:any, cb:any) => {
         let type = req.params.type;
         let path = `../static/images/${type}`;
-        //fs.mkdirsSync(path);
         cb(null, `static/images`);
     },
     filename: function (req:any, file:any, cb:any) {
