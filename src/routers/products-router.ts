@@ -27,14 +27,14 @@ router.get('/:id',
     res.send(404)
 });
 
-router.put('/', checkAuth,
+router.put('/',
     async (req: Request, res: Response) => {
     let newProduct = req.body;
     await productsRepository.updateProduct(newProduct);
     res.send(204)
 });
 
-router.delete('/:id', checkAuth,
+router.delete('/:id',
     async (req: Request, res: Response) => {
     try {
         const productId = req.params.id;
