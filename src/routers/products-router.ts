@@ -28,10 +28,14 @@ router.get('/:id',
 
 router.put('/', checkAuth,
     async (req: Request, res: Response) => {
-    let newProduct = req.body;
-    newProduct.photo = newProduct.photo.slice(22, newProduct.photo.length);
-    await productsRepository.updateProduct(newProduct);
-    res.send(204)
+    try {
+        let newProduct = req.body;
+        newProduct.photo = newProduct.photo.slice(22, newProduct.photo.length);
+        let updated = await productsRepository.updateProduct(newProduct);
+        res.status(200).send(updated)
+    } catch (e) {
+        res.status(402).send(e)
+    }
 });
 
 router.delete('/:id', checkAuth,
