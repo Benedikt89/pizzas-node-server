@@ -15,12 +15,14 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
         const user = req.body;
         let userFind = await usersRepository.getUser(user.phone);
         if (userFind.length < 1)
-            return res.status(401).json({
+            return res.status(200).json({
+                statusCode: 10,
                 message: 'phone or password not correct'
             });
         const compared = await bcrypt.compare(user.password, userFind[0].password);
         if (!compared) {
-            return res.status(401).json({
+            return res.status(200).json({
+                statusCode: 10,
                 message: 'phone or password not correct'
             });
         }
@@ -40,6 +42,7 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
             );
             res.cookie("x-access-token" , token, {maxAge : 99999});
             return res.status(200).json({
+                statusCode: 0,
                 message: 'Auth Successful',
                 userInfo: {
                     userName: userFind[0].phone,
