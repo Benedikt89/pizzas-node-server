@@ -8,7 +8,7 @@ const checkAuth = require("../middleware/check-auth");
 
 const router = express.Router();
 
-router.get('/',
+router.get('/', checkAuth,
     async (req: Request, res: Response) => {
     try {
         let products = await productsRepository.getProducts();
@@ -57,7 +57,7 @@ router.delete('/:id', checkAuth,
     }
 });
 
-router.post('/', upload.single('image'),
+router.post('/', checkAuth, upload.single('image'),
     async (req: Request, res: Response, next: NextFunction) => {
     try {
         //checking file
